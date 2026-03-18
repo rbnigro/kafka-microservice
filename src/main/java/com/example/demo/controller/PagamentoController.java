@@ -2,7 +2,6 @@ package com.example.demo.controller;
 
 import com.example.demo.dto.PagamentoDTO;
 import com.example.demo.service.PagamentoPublisherService;
-import com.example.demo.service.PagamentoService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -20,17 +19,14 @@ public class PagamentoController {
 
     private final KafkaTemplate<String, PagamentoDTO> kafkaTemplate;
 
-    private final PagamentoService pagamentoService;
     private final PagamentoPublisherService publisherService;
 
     private final String TOPIC = "pagamentos-topic";
 
     public PagamentoController(KafkaTemplate<String,
                                PagamentoDTO> kafkaTemplate,
-                               PagamentoService pagamentoService,
                                PagamentoPublisherService publisherService) {
         this.kafkaTemplate = kafkaTemplate;
-        this.pagamentoService = pagamentoService;
         this.publisherService = publisherService;
     }
 
@@ -41,17 +37,10 @@ public class PagamentoController {
         return ResponseEntity.ok("Pagamento nº " + dto.getNumero() + " enviado para fila.");
     }
 
-    @Operation(summary = "Processa o pagamento via Strategy e envia ao Kafka")
-    @PostMapping("/v1/processar")
-    public ResponseEntity<PagamentoDTO> processarEDevolver(@RequestBody PagamentoDTO dto) {
-        PagamentoDTO processado = pagamentoService.processar(dto);
-        return ResponseEntity.ok(processado);
-    }
-
     @PostMapping("/v1/enviar")
     public ResponseEntity<String> processarEEnviar(@RequestBody PagamentoDTO pagamentoDTO) {
         publisherService.enviar(pagamentoDTO);
 
-        return ResponseEntity.ok("Pagamento para processamento.");
+        return ResponseEntity.ok("Enviado  para processamento.");
     }
 }

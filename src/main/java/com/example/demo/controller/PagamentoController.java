@@ -44,19 +44,14 @@ public class PagamentoController {
     @Operation(summary = "Processa o pagamento via Strategy e envia ao Kafka")
     @PostMapping("/v1/processar")
     public ResponseEntity<PagamentoDTO> processarEDevolver(@RequestBody PagamentoDTO dto) {
-        // Graças ao application.properties, isso roda em uma Virtual Thread
         PagamentoDTO processado = pagamentoService.processar(dto);
         return ResponseEntity.ok(processado);
     }
 
-    @PostMapping("/v1/processar-e-enviar")
-    public ResponseEntity<String> processarEEnviar(@RequestBody PagamentoDTO dto) {
-        // chama o service de processamento
-        PagamentoDTO processado = pagamentoService.processar(dto);
+    @PostMapping("/v1/enviar")
+    public ResponseEntity<String> processarEEnviar(@RequestBody PagamentoDTO pagamentoDTO) {
+        publisherService.enviar(pagamentoDTO);
 
-        // chama o service que envia para Kafka
-        publisherService.enviar(processado);
-
-        return ResponseEntity.ok("Pagamento processado e enviado para Kafka.");
+        return ResponseEntity.ok("Pagamento para processamento.");
     }
 }

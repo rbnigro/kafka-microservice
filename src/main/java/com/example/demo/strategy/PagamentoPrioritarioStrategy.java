@@ -1,6 +1,6 @@
 package com.example.demo.strategy;
 
-import com.example.demo.DTO.PagamentoDTO;
+import com.example.demo.dto.PagamentoDTO;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
@@ -18,7 +18,7 @@ public class PagamentoPrioritarioStrategy implements PagamentoStrategy {
     @Override
     public void processarEEnviar(PagamentoDTO dto) {
         dto.setDescricao(dto.getDescricao() + " [PRIORIDADE ALTA]");
-        kafkaTemplate.send("pagamentos-topic", "high-priority", dto);
+        kafkaTemplate.send("pagamento.request.topic.v2", "high-priority", dto);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import com.example.demo.DTO.PagamentoDTO;
+import com.example.demo.dto.PagamentoDTO;
 import com.example.demo.strategy.PagamentoStrategy;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import com.example.demo.DTO.PagamentoDTO;
+import com.example.demo.dto.PagamentoDTO;
 import com.example.demo.service.PagamentoPublisherService;
 import com.example.demo.service.PagamentoService;
 import io.swagger.v3.oas.annotations.Operation;
